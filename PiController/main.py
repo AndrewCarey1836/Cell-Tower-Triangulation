@@ -427,8 +427,8 @@ def main():
         #boot back up in a specified amount of time
         #boot_time = hour_now + 1
         boot_hour = hour_now
-        boot_minute = minute_now + 2
-        boot_second = second_now
+        boot_minute = minute_now
+        boot_second = second_now + 20
         #if boot_time == 24:
         #    boot_time = 0
         print("Booting up at: " + str(boot_hour) + ":" + str(boot_minute) + ":" + str(boot_second))
