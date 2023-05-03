@@ -181,6 +181,8 @@ class triangulate:
             if str(history[item][0]) == "***********************************************************************************************":
                 if towerCount == 3:
                     #convert timing advances
+                    #changed due to disable of SNR
+                    ''''
                     lat1 = float(towerList[0][8])
                     long1 = float(towerList[0][9])
                     t1 = int(towerList[0][4])
@@ -195,9 +197,25 @@ class triangulate:
                     long3 = float(towerList[0][9])
                     t3 = int(towerList[0][4])
                     rsrp3 = int(towerList[0][5])
+                    '''
+
+                    lat1 = float(towerList[0][7])
+                    long1 = float(towerList[0][8])
+                    t1 = int(towerList[0][4])
+                    rsrp1 = int(towerList[0][5])
+
+                    lat2 = float(towerList[0][7])
+                    long2 = float(towerList[0][8])
+                    t2 = int(towerList[0][4])
+                    rsrp2 = int(towerList[0][5])
+
+                    lat3 = float(towerList[0][7])
+                    long3 = float(towerList[0][8])
+                    t3 = int(towerList[0][4])
+                    rsrp3 = int(towerList[0][5])
 
                     #triangulate
-                    lat, long = self.find(lat1, long1, t1, rsrp1, lat2, long2, t2, lat3, long3, t3)
+                    lat, long = self.find(lat1, long1, t1, rsrp1, lat2, long2, t2, rsrp2, lat3, long3, t3, rsrp3)
                     locationList.append([str(towerCount), str(lat), str(long), history[item - 1][1], history[item - 1][2], history[item - 1][3]])
                     #print(locationList)
 
@@ -226,8 +244,9 @@ class triangulate:
 
                     #store the lat and long of the tower as well as the distance away from it
                     #sort of like a radius, but would look like a ring
-                    lat = towerList[0][8]
-                    long = towerList[0][9]
+                    #changed for disabling of SNR
+                    lat = towerList[0][7]
+                    long = towerList[0][8]
                     locationList.append([str(towerCount), str(lat), str(long), radius, history[item - 1][1], history[item - 1][2], history[item - 1][3]])
                     
                     #clear tower count

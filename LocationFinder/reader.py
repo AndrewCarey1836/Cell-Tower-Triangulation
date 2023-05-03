@@ -131,33 +131,37 @@ class Reader:
             if "*****" == next_line:
                 #do somehting
                 derp = 1
-            if "Cell ID:" in next_line:
+            elif "Cell ID:" in next_line:
                 #do somehting
                 derp = 2
-            if "MCC:" in next_line:
+            elif "MCC:" in next_line:
                 #do somehting
                 derp = 3
-            if "MNC:" in next_line:
+            elif "MNC:" in next_line:
                 #do somehting
                 derp = 4
-            if "TAC" in next_line:
+            elif "TAC" in next_line:
                 #do somehting
                 derp = 5
-            if "Timing Advance:" in next_line:
+            elif "Timing Advance:" in next_line:
                 #do somehting
                 derp = 6
-            if "RSRP" in next_line:
+            elif "RSRP" in next_line:
                 #do somehting
                 derp = 7
-            if "RSRQ" in next_line:
+            elif "RSRQ" in next_line:
                 #do somehting
                 derp = 8
+            elif "******" == next_line:
+                derp = 9
+                #file.readline().rstrip().replace("\x00", "")
             
             #if the next line is in the actual content
-            if  "*****************************************" in next_line:
+            elif  "*****************************************" in next_line:
                 #cycle through lines below
 
                 #tower 1
+                #file.readline().rstrip().replace("\x00", "")
                 tower1ID = file.readline().rstrip().replace("\x00", "")
                 loop = 0
                 if "empty" in tower1ID:
@@ -168,8 +172,9 @@ class Reader:
                     tower1RSRP = file.readline().rstrip().replace("\x00", "")
                     tower1RSRQ = file.readline().rstrip().replace("\x00", "")
                     blank = file.readline().rstrip().replace("\x00", "")
-                    tower1SNR = file.readline().rstrip().replace("\x00", "")
-                    tower1 = [tower1ID, tower1MCC, tower1MNC, tower1TAC, tower1TA, tower1RSRP, tower1RSRQ, tower1SNR]
+                    #tower1SNR = file.readline().rstrip().replace("\x00", "")
+                    #tower1 = [tower1ID, tower1MCC, tower1MNC, tower1TAC, tower1TA, tower1RSRP, tower1RSRQ, tower1SNR]
+                    tower1 = [tower1ID, tower1MCC, tower1MNC, tower1TAC, tower1TA, tower1RSRP, tower1RSRQ]
 
                 else:
                     tower1MCC = file.readline().rstrip().replace("\x00", "")
@@ -178,8 +183,9 @@ class Reader:
                     tower1TA = file.readline().rstrip().replace("\x00", "")
                     tower1RSRP = file.readline().rstrip().replace("\x00", "")
                     tower1RSRQ = file.readline().rstrip().replace("\x00", "")
-                    tower1SNR = file.readline().rstrip().replace("\x00", "")
-                    tower1 = [tower1ID, tower1MCC, tower1MNC, tower1TAC, tower1TA, tower1RSRP, tower1RSRQ, tower1SNR]
+                    #tower1SNR = file.readline().rstrip().replace("\x00", "")
+                    #tower1 = [tower1ID, tower1MCC, tower1MNC, tower1TAC, tower1TA, tower1RSRP, tower1RSRQ, tower1SNR]
+                    tower1 = [tower1ID, tower1MCC, tower1MNC, tower1TAC, tower1TA, tower1RSRP, tower1RSRQ]
 
                 #tower 2
                 tower2ID = file.readline().rstrip().replace("\x00", "")
@@ -192,8 +198,9 @@ class Reader:
                     tower2RSRP = file.readline().rstrip().replace("\x00", "")
                     tower2RSRQ = file.readline().rstrip().replace("\x00", "")
                     blank = file.readline().rstrip().replace("\x00", "")
-                    tower2SNR = file.readline().rstrip().replace("\x00", "")
-                    tower2 = [tower2ID, tower2MCC, tower2MNC, tower2TAC, tower2TA, tower2RSRP, tower2RSRQ, tower2SNR]
+                    #tower2SNR = file.readline().rstrip().replace("\x00", "")
+                    #tower2 = [tower2ID, tower2MCC, tower2MNC, tower2TAC, tower2TA, tower2RSRP, tower2RSRQ, tower2SNR]
+                    tower2 = [tower2ID, tower2MCC, tower2MNC, tower2TAC, tower2TA, tower2RSRP, tower2RSRQ]
                 else:
                     tower2MCC = file.readline().rstrip().replace("\x00", "")
                     tower2MNC = file.readline().rstrip().replace("\x00", "")
@@ -201,9 +208,9 @@ class Reader:
                     tower2TA = file.readline().rstrip().replace("\x00", "")
                     tower2RSRP = file.readline().rstrip().replace("\x00", "")
                     tower2RSRQ = file.readline().rstrip().replace("\x00", "")
-                    tower2SNR = file.readline().rstrip().replace("\x00", "")
-                    tower2 = [tower2ID, tower2MCC, tower2MNC, tower2TAC, tower2TA, tower2RSRP, tower2RSRQ, tower2SNR]
-
+                    #tower2SNR = file.readline().rstrip().replace("\x00", "")
+                    #tower2 = [tower2ID, tower2MCC, tower2MNC, tower2TAC, tower2TA, tower2RSRP, tower2RSRQ, tower2SNR]
+                    tower2 = [tower2ID, tower2MCC, tower2MNC, tower2TAC, tower2TA, tower2RSRP, tower2RSRQ]
 
                 #tower 3
                 tower3ID = file.readline().rstrip().replace("\x00", "")
@@ -215,8 +222,9 @@ class Reader:
                     tower3RSRP = file.readline().rstrip().replace("\x00", "")
                     tower3RSRQ = file.readline().rstrip().replace("\x00", "")
                     blank = file.readline().rstrip().replace("\x00", "")
-                    tower3SNR = file.readline().rstrip().replace("\x00", "")
-                    tower3 = [tower3ID, tower3MCC, tower3MNC, tower3TAC, tower3TA, tower3RSRP, tower3RSRQ, tower3SNR]
+                    #tower3SNR = file.readline().rstrip().replace("\x00", "")
+                    #tower3 = [tower3ID, tower3MCC, tower3MNC, tower3TAC, tower3TA, tower3RSRP, tower3RSRQ, tower3SNR]
+                    tower3 = [tower3ID, tower3MCC, tower3MNC, tower3TAC, tower3TA, tower3RSRP, tower3RSRQ]
                 else:
                     tower3MCC = file.readline().rstrip().replace("\x00", "")
                     tower3MNC = file.readline().rstrip().replace("\x00", "")
@@ -224,8 +232,9 @@ class Reader:
                     tower3TA = file.readline().rstrip().replace("\x00", "")
                     tower3RSRP = file.readline().rstrip().replace("\x00", "")
                     tower3RSRQ = file.readline().rstrip().replace("\x00", "")
-                    tower3SNR = file.readline().rstrip().replace("\x00", "")
-                    tower3 = [tower3ID, tower3MCC, tower3MNC, tower3TAC, tower3TA, tower3RSRP, tower3RSRQ, tower3SNR]
+                    #tower3SNR = file.readline().rstrip().replace("\x00", "")
+                    #tower3 = [tower3ID, tower3MCC, tower3MNC, tower3TAC, tower3TA, tower3RSRP, tower3RSRQ, tower3SNR]
+                    tower3 = [tower3ID, tower3MCC, tower3MNC, tower3TAC, tower3TA, tower3RSRP, tower3RSRQ]
 
                 #clock
                 time = file.readline().rstrip().replace("\x00", "")

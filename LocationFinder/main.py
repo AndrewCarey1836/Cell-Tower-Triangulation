@@ -49,7 +49,7 @@ def main():
                     TA = tower[4]
                     RSRP = tower[5]
                     RSRQ = tower[6]
-                    SNR = tower[7]
+                    #SNR = tower[7]
                     
 
                     #print(ID)
@@ -57,7 +57,8 @@ def main():
                     lat, long = req.request(ID, MCC, MNC, TAC)
                     
                     #for some reason extra values are but in between real towers
-                    locationListGroup.append([ID, MCC, MNC, TAC, TA, RSRP, RSRQ, SNR, lat, long])
+                    #locationListGroup.append([ID, MCC, MNC, TAC, TA, RSRP, RSRQ, SNR, lat, long])
+                    locationListGroup.append([ID, MCC, MNC, TAC, TA, RSRP, RSRQ, lat, long])
                 
                 #append location to tower lists
                 timeList = list()
