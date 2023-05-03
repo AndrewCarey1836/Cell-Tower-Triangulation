@@ -12,8 +12,7 @@ class requestLocationAPI:
         url = "https://us1.unwiredlabs.com/v2/process"
 
         #data to be searched
-        #key = "Your key here"
-        key = "pk.0fec586428c8c92dbf2b510b4c285f4b"
+        key = "Your key here"
         
         payload = {
         "token": key,
