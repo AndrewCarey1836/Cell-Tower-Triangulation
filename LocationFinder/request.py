@@ -12,8 +12,8 @@ class requestLocationAPI:
         url = "https://us1.unwiredlabs.com/v2/process"
 
         #data to be searched
-        key = "Your key here"
-        
+        #key = "Your key here"
+        key = "pk.0fec586428c8c92dbf2b510b4c285f4b"
         
         payload = {
         "token": key,
@@ -59,8 +59,10 @@ class requestLocationAPI:
             #print to screen and file
             print("Requests Left: " + balance)
             towerData = str(CID) + " " + str(MCC) + " " + str(MNC) + " " + str(LAC) + " " + lat + " " + long + " " + time
-            self.storeToFile("towerSearch", towerData)
+            self.storeToFile("towerSearch.txt", towerData)
             return lat, long
+        else:
+            return "","" 
 
 
     def checkStored(self,fileName, CID, MCC, MNC):

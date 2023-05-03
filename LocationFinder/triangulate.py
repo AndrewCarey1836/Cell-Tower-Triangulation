@@ -216,7 +216,7 @@ class triangulate:
 
                     #triangulate
                     lat, long = self.find(lat1, long1, t1, rsrp1, lat2, long2, t2, rsrp2, lat3, long3, t3, rsrp3)
-                    locationList.append([str(towerCount), str(lat), str(long), history[item - 1][1], history[item - 1][2], history[item - 1][3]])
+                    locationList.append([str(towerCount), str(lat), str(long), history[item - 1][1], history[item - 1][2], history[item - 1][3]], )
                     #print(locationList)
 
                     #clear tower count

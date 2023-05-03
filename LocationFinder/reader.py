@@ -328,7 +328,7 @@ class Reader:
 
                 for item in tower:
                     
-                    if count < 30:
+                    if count < 28:
                         t = ''.join(str(item))
                         file.write(t)
                         file.write(" ")
