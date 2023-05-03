@@ -1,14 +1,14 @@
 #import things
+import os
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'tri_algo'))
 
 #import libraries
 import math
 import numpy
 import datetime
 import os
-import sys
-
-sys.path.append(os.path.join(os.path.dirname(__file__), 'tri_algo'))
-
 
 #import internal modules
 import tri_algo.geo2d as geo2d
@@ -22,6 +22,24 @@ class triangulate:
     def find(self, lat1, long1, dist1, lat2, long2, dist2, lat3, long3, dist3):
         
         earthR = 6371
+
+        
+        print(dist1)
+        print(dist2)
+        print(dist3)
+        
+        
+        
+        lat1 = 37.418436
+        long1 = -121.963477
+        #dist1 = 0.265710701754
+        lat2 = 37.417243
+        long2 = -121.961889
+        #dist2 = 0.234592423446
+        lat3 = 37.418692
+        long3 = -121.960194
+        #dist3 = 0.0548954278262
+        
 
         #using authalic sphere
         #if using an ellipsoid this step is slightly different
@@ -59,6 +77,13 @@ class triangulate:
         x = (pow(dist1,2) - pow(dist2,2) + pow(d,2))/(2*d)
         y = ((pow(dist1,2) - pow(dist3,2) + pow(i,2) + pow(j,2))/(2*j)) - ((i/j)*x)
 
+        
+        print("x: " + str(x))
+        print("y: " + str(y))
+
+        print("pow x: " + str(pow(x,2)))
+        print("pow y: " + str(pow(y,2)))
+        
 
         # only one case shown here
         #f = pow(dist1,2) - pow(x,2) - pow(y,2)
@@ -90,7 +115,7 @@ class triangulate:
         dev.addTower(tow2, timeAdvance=t2, rsrp=rsrp2)
         dev.addTower(tow3, timeAdvance=t3, rsrp=rsrp3)
 
-        my_lat, my_long = dev.estimateCoords(method)
+        my_lat, my_long = dev.ellipsoidal2DPos(method)
 
         return my_lat, my_long
     
@@ -125,7 +150,7 @@ class triangulate:
 
         #This is the value we will use since the nrf9160 automatically includes the "times 16"
         #nordic stores Timing Advance as "Basic Time units" or Ts
-        Nta = TA * Ts / 2
+        Nta = TA * Ts
         #print(Nta)
 
         #determine the number of meters
@@ -156,42 +181,23 @@ class triangulate:
             if str(history[item][0]) == "***********************************************************************************************":
                 if towerCount == 3:
                     #convert timing advances
-                    '''
-                    #print(str(towerList[0][4]))
-                    #print(str(towerList[1][4]))
-                    #print(str(towerList[2][4]))
-                    t1 = self.convertToMeters(int(towerList[0][4]))
-                    t2 = self.convertToMeters(int(towerList[1][4]))
-                    t3 = self.convertToMeters(int(towerList[2][4]))
-                    #print("t1: " + str(t1) + " t2: " + str(t2) + " t3: " + str(t3))
-
-                    #convert to degrees
-                    t1 = self.convertToDegrees(t1)
-                    t2 = self.convertToDegrees(t2)
-                    t3 = self.convertToDegrees(t3)
-
-                    #triangulate
-                    lat, long = self.find(float(towerList[0][8]), float(towerList[0][9]), t1, float(towerList[1][8]), float(towerList[1][9]), t2, float(towerList[2][8]), float(towerList[2][9]), t3)
-                    '''
-
                     lat1 = float(towerList[0][8])
                     long1 = float(towerList[0][9])
-                    t1 = int(towerList[0][4]) / 16
+                    t1 = int(towerList[0][4])
                     rsrp1 = int(towerList[0][5])
 
                     lat2 = float(towerList[0][8])
                     long2 = float(towerList[0][9])
-                    t2 = int(towerList[0][4]) / 16
+                    t2 = int(towerList[0][4])
                     rsrp2 = int(towerList[0][5])
 
                     lat3 = float(towerList[0][8])
                     long3 = float(towerList[0][9])
-                    t3 = int(towerList[0][4]) / 16
+                    t3 = int(towerList[0][4])
                     rsrp3 = int(towerList[0][5])
 
                     #triangulate
-                    lat, long = self.find(lat1, long1, t1, rsrp1, lat2, long2, t2, rsrp2, lat3, long3, t3, rsrp3)
-
+                    lat, long = self.find(lat1, long1, t1, rsrp1, lat2, long2, t2, lat3, long3, t3)
                     locationList.append([str(towerCount), str(lat), str(long), history[item - 1][1], history[item - 1][2], history[item - 1][3]])
                     #print(locationList)
 

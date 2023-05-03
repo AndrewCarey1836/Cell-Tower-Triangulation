@@ -2,13 +2,11 @@ import tower
 import trirf2d
 import topography
 import geo2d
+from scipy.optimize import least_squares
 
 class DistMethod:
     rsrp = 'rsrp'
     ta = 'ta'
-
-max_steps = 100
-step_size = 5
 
 class Device:
     def __init__(self):
@@ -39,7 +37,7 @@ class Device:
             if method == DistMethod.rsrp:
                 radius = trirf2d.dist_from_rsrp(tow.rsrp)
             elif method == DistMethod.ta:
-                radius = tow.get_ta_dist('5g', tow.timeAdvance)
+                radius = tow.get_ta_dist('lte', tow.timeAdvance)
             #print('lat:', lat_meters, 'long:', long_meters, 'dist:', radius) # DEBUG
             circles.append(geo2d.Circle((lat_meters, long_meters), radius))
         
@@ -53,15 +51,13 @@ class Device:
         circles = []
 
         for tow in self.towers:
-            lat_meters = topography.lat_to_dist(tow.latitude, tow.latitude - anchor[0])
-            long_meters = topography.long_to_dist(tow.latitude, tow.longitude - anchor[1])
             radius = None
             if method == DistMethod.rsrp:
                 radius = trirf2d.dist_from_rsrp(tow.rsrp)
             elif method == DistMethod.ta:
-                radius = tow.get_ta_dist('5g', tow.timeAdvance)
-            print('lat:', lat_meters, 'long:', long_meters, 'dist:', radius) # DEBUG
-            circles.append(geo2d.Circle((lat_meters, long_meters), radius))
+                radius = tower.Tower.get_ta_dist('5g', tow.timeAdvance)
+            #print('lat:', tow.latitude, 'long:', tow.longitude, 'dist:', radius) # DEBUG
+            circles.append(geo2d.Circle((tow.latitude, tow.longitude), radius))
         
         return geo2d.estimate_intersection(circles[0], circles[1], circles[2])
     
@@ -73,6 +69,45 @@ class Device:
         long_ang = topography.xdist_to_long(anchor[0], coords_meters[1])
 
         return (anchor[0] + lat_ang, anchor[1] + long_ang)
+    
+    def ellipsoidal2DPos(self, method:DistMethod):
+        anchor = self.towerAnchor()
+
+        lat_deg = topography.lat_to_dist(anchor[0], 1)
+        long_deg = topography.long_to_dist(anchor[0], 1)
+
+        min_tow = self.towers[0]
+
+        for tow in self.towers:
+            if method == DistMethod.ta:
+                if tow.timeAdvance < min_tow.timeAdvance:
+                    min_tow = tow
+            elif method == DistMethod.rsrp:
+                if tow.rsrp < min_tow.rsrp:
+                    min_tow = tow
+        
+        guess = (min_tow.latitude, min_tow.longitude)
+
+        def eq(g):
+            my_lat, my_long = g
+
+            towerList = []
+
+            for tow in self.towers:
+                if method == DistMethod.ta:
+                    towerList.append(
+                        ((my_lat - tow.latitude) * lat_deg)**2 + ((my_long - tow.longitude) * long_deg)**2 - tower.Tower.get_ta_dist('5g', tow.timeAdvance)**2
+                    )
+                elif method == DistMethod.rsrp:
+                    towerList.append(
+                        ((my_lat - tow.latitude) * lat_deg)**2 + ((my_long - tow.longitude) * long_deg)**2 - trirf2d.dist_from_rsrp(tow.rsrp)**2
+                    )
+
+            return tuple(towerList)
+
+        val = least_squares(eq, guess, method='lm')
+
+        return tuple(val.x)
     
     def getExact2DPosition(self):
         if len(self.towers) < 3:
