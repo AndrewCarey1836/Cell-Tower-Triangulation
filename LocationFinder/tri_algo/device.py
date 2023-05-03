@@ -74,6 +74,45 @@ class Device:
 
         return (anchor[0] + lat_ang, anchor[1] + long_ang)
     
+    def ellipsoidal2DPos(self, method:DistMethod):
+        anchor = self.towerAnchor()
+
+        lat_deg = topography.lat_to_dist(anchor[0], 1)
+        long_deg = topography.long_to_dist(anchor[0], 1)
+
+        min_tow = self.towers[0]
+
+        for tow in self.towers:
+            if method == DistMethod.ta:
+                if tow.timeAdvance < min_tow.timeAdvance:
+                    min_tow = tow
+            elif method == DistMethod.rsrp:
+                if tow.rsrp < min_tow.rsrp:
+                    min_tow = tow
+        
+        guess = (min_tow.latitude, min_tow.longitude)
+
+        def eq(g):
+            my_lat, my_long = g
+
+            towerList = []
+
+            for tow in self.towers:
+                if method == DistMethod.ta:
+                    towerList.append(
+                        ((my_lat - tow.latitude) * lat_deg)**2 + ((my_long - tow.longitude) * long_deg)**2 - tower.Tower.get_ta_dist('5g', tow.timeAdvance)**2
+                    )
+                elif method == DistMethod.rsrp:
+                    towerList.append(
+                        ((my_lat - tow.latitude) * lat_deg)**2 + ((my_long - tow.longitude) * long_deg)**2 - trirf2d.dist_from_rsrp(tow.rsrp)**2
+                    )
+
+            return tuple(towerList)
+
+        val = least_squares(eq, guess, method='lm')
+
+        return tuple(val.x)
+    
     def getExact2DPosition(self):
         if len(self.towers) < 3:
             print('ERROR: at least 3 towers required')
