@@ -4,6 +4,20 @@ import os
 import datetime
 
 class requestLocationAPI:
+
+    #read the api key from a text file
+    def getKey(self):
+        path = "./key"
+        keyFile = "key.txt"
+        basedir = os.path.dirname(path)
+        fName = path + "/" + keyFile
+        file = open(fName, "r")
+
+        #get key
+        key = file.readline()
+
+        return key
+
     #make a request to unwired labs location api
     def requestFromAPI(self, CID, MCC, MNC, LAC):
 
@@ -12,7 +26,10 @@ class requestLocationAPI:
         url = "https://us1.unwiredlabs.com/v2/process"
 
         #data to be searched
-        key = "Your key here"
+        #key = "Your key here"
+
+        #put the key in a text file
+        key = self.getKey()
         
         payload = {
         "token": key,
@@ -62,6 +79,7 @@ class requestLocationAPI:
             return lat, long
         else:
             return "","" 
+    
 
 
     def checkStored(self,fileName, CID, MCC, MNC):
