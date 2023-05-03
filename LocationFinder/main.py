@@ -13,7 +13,7 @@ def main():
         tri = triangulate()
 
         #determine whether to read from the collected tower information or from the tower location file
-        selectChar, towerType = info.selectData()
+        selectChar = info.selectData()
         if  selectChar == "c":
             #do things
             #print(selectChar)
@@ -41,6 +41,7 @@ def main():
                 for tower in towerGroup:
 
                     #select tower ID from data collected from a single tower, if it exists
+                    print(tower)
                     ID = tower[0]
                     MCC = tower[1]
                     MNC = tower[2]
@@ -49,14 +50,14 @@ def main():
                     RSRP = tower[5]
                     RSRQ = tower[6]
                     SNR = tower[7]
-                    SECT = tower[8]
+                    
 
                     #print(ID)
                     #lat, long = info.compareIDtoDatabase(MCC, MNC, TAC, ID)
-                    lat, long = req.request(ID, MCC, MNC, TAC, towerType)
+                    lat, long = req.request(ID, MCC, MNC, TAC)
                     
                     #for some reason extra values are but in between real towers
-                    locationListGroup.append([ID, MCC, MNC, TAC, TA, RSRP, RSRQ, SNR, lat, long, SECT])
+                    locationListGroup.append([ID, MCC, MNC, TAC, TA, RSRP, RSRQ, SNR, lat, long])
                 
                 #append location to tower lists
                 timeList = list()
@@ -64,7 +65,7 @@ def main():
                 timeList.append(towerGroup[3])
                 #timeListList.append(timeList)
                 #locationList.append([locationListGroup[0:3], timeListList])
-                locationList.append([locationListGroup[0], locationListGroup[1], locationListGroup[2], towerGroup[3]])
+                locationList.append([locationListGroup[0],locationListGroup[1], locationListGroup[2], towerGroup[3]])
                 #locationList.append([locationListGroup[0],locationListGroup[1], locationListGroup[2], timeList])
                 #print(locationList)
                 locationListGroup.clear()
@@ -74,7 +75,9 @@ def main():
             #store tower lists to output file
             time = datetime.datetime.now()
             info.storeToFile("history", locationList, time)
+
             #should be done with location finding
+
 
         #get a list of all towers, their locations, and the timestamp of the collection
         elif selectChar == "l":
@@ -86,6 +89,8 @@ def main():
             locationList = tri.detAction(towerDataList)
             tri.storeLocations(locationList)
 
+
+
         elif selectChar == "q":
             selectChar = ""
             #quit
@@ -95,6 +100,9 @@ def main():
         else:
             #something went wrong
             print("Something went wrong and I don't know why!")
+
+    #This ends the collecting program
+    #print("All done!")
 
 
 # Using the special variable 
