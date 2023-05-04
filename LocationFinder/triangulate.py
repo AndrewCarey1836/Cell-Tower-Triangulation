@@ -201,17 +201,17 @@ class triangulate:
 
                     lat1 = float(towerList[0][7])
                     long1 = float(towerList[0][8])
-                    t1 = int(towerList[0][4])
+                    t1 = int(towerList[0][4]) / 16
                     rsrp1 = int(towerList[0][5])
 
                     lat2 = float(towerList[0][7])
                     long2 = float(towerList[0][8])
-                    t2 = int(towerList[0][4])
+                    t2 = int(towerList[0][4]) / 16
                     rsrp2 = int(towerList[0][5])
 
                     lat3 = float(towerList[0][7])
                     long3 = float(towerList[0][8])
-                    t3 = int(towerList[0][4])
+                    t3 = int(towerList[0][4]) / 16
                     rsrp3 = int(towerList[0][5])
 
                     #triangulate

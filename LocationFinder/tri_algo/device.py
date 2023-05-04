@@ -55,7 +55,8 @@ class Device:
             if method == DistMethod.rsrp:
                 radius = trirf2d.dist_from_rsrp(tow.rsrp)
             elif method == DistMethod.ta:
-                radius = tower.Tower.get_ta_dist('5g', tow.timeAdvance)
+                #radius = tower.Tower.get_ta_dist('5g', tow.timeAdvance)
+                radius = tower.Tower.get_ta_dist('lte', tow.timeAdvance)
             #print('lat:', tow.latitude, 'long:', tow.longitude, 'dist:', radius) # DEBUG
             circles.append(geo2d.Circle((tow.latitude, tow.longitude), radius))
         
@@ -96,7 +97,8 @@ class Device:
             for tow in self.towers:
                 if method == DistMethod.ta:
                     towerList.append(
-                        ((my_lat - tow.latitude) * lat_deg)**2 + ((my_long - tow.longitude) * long_deg)**2 - tower.Tower.get_ta_dist('5g', tow.timeAdvance)**2
+                        #((my_lat - tow.latitude) * lat_deg)**2 + ((my_long - tow.longitude) * long_deg)**2 - tower.Tower.get_ta_dist('5g', tow.timeAdvance)**2
+                        ((my_lat - tow.latitude) * lat_deg)**2 + ((my_long - tow.longitude) * long_deg)**2 - tower.Tower.get_ta_dist('lte', tow.timeAdvance)**2
                     )
                 elif method == DistMethod.rsrp:
                     towerList.append(

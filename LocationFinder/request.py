@@ -144,7 +144,7 @@ class requestLocationAPI:
             #check database for tower
             inDatabase, lat, long = self.checkStored("towerSearch.txt", CID, MCC, MNC)
             show = CID + " " + MCC + " " + MNC + " " + LAC
-            print(show)
+            #print(show)
             if inDatabase == "false":
                 #make a request
                 lat, long = self.requestFromAPI(CID, MCC, MNC, LAC)
